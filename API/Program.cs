@@ -1,4 +1,5 @@
 
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +12,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-/*ez én írom*/
+/*ezt én írom*/
 builder.Services.AddDbContext<StoreContext>(opt => {
     //létrehozzok a kapcsolatott az adatbázissal amit a 
     //appsettings.Development.json beállítottunk connections részben
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IProductRepository>();
+/*Eddig ...*/
+
 
 var app = builder.Build();
 
