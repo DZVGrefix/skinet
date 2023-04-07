@@ -14,12 +14,29 @@ namespace Infrastructure.Data
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await this.context.Products.FindAsync(id);
+            return await this.context.Products
+                .Include(p => p.ProductType)
+                .Include(p => p.ProductBrand)
+                .FirstOrDefaultAsync(p => p.Id == id);//itt több is lehet így az elsőt vagy ami a legjobban hasonlit
+                //.FindAsync(id);//ez csak akkor jó ha tuti egy elem van
         }
 
         public async Task<IReadOnlyList<Product>> GetProductsAsync()
         {
-            return await this.context.Products.ToListAsync();
+            return await this.context.Products
+                .Include(p => p.ProductType)
+                .Include(p => p.ProductBrand)
+                .ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
+        {
+            return await this.context.ProductBrands.ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
+        {
+            return await this.context.ProductTypes.ToListAsync();
         }
     }
 }
